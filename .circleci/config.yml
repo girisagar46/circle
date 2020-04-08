@@ -27,9 +27,19 @@ jobs:
           command: python manage.py generate_swagger swagger.yaml
       - store_artifacts:
           path: swagger.yaml
-          destination: docs/swagger.yaml
+          destination: $CIRCLE_BUILD_NUM/swagger.yaml
+  netlify:
+    requires: build
+    executor:
+      name: node-executor
+    working_directory: ~/workspace
+    steps:
+      - run:
+          name: Echo Test
+          command: date -r 1585099305064158
 
 workflows:
   ci:
     jobs:
       - build
+      - netlify
