@@ -29,7 +29,6 @@ jobs:
           path: swagger.yaml
           destination: $CIRCLE_BUILD_NUM/swagger.yaml
   netlify:
-    requires: build
     executor:
       name: node-executor
     working_directory: ~/workspace
@@ -42,4 +41,6 @@ workflows:
   ci:
     jobs:
       - build
-      - netlify
+      - netlify:
+          requires:
+            - build
