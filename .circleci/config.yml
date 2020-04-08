@@ -1,7 +1,7 @@
 version: 2.1
 executors:
   default:
-    working_directory: /tmp
+    working_directory: ~/workspace
     docker:
       - image: circleci/python:3.5
   node-executor:
