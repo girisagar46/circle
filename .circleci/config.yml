@@ -1,35 +1,21 @@
 version: 2.1
-executors:
-  default:
-    working_directory: ~/workspace
-    docker:
-      - image: circleci/python:3.5
-  node-executor:
-    working_directory: ~/workspace
-    docker:
-      - image: circleci/node:12
+
+orbs:
+  python: circleci/python@0.2.1
 
 jobs:
-  build:
-    executor:
-      name: default
-    working_directory: ~/workspace
+  build-and-test:
+    executor: python/default
     steps:
       - checkout
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
       - run:
-          name: Install dependency
-          command: pip install -r requirements.txt
-      - run:
-          name: Django test
-          command: python manage.py test
-      - run:
-          name: Generate swagger artifacts
-          command: python manage.py generate_swagger swagger.yaml
-      - store_artifacts:
-          path: swagger.yaml
-          destination: swagger.yaml
+          command: ./manage.py test
+          name: Test
 
 workflows:
-  ci:
+  main:
     jobs:
-      - build
+      - build-and-test
