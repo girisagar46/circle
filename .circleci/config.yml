@@ -1,11 +1,11 @@
 version: 2.1
 executors:
   default:
-    working_directory: ~/workspace
+    working_directory: /tmp
     docker:
       - image: circleci/python:3.5
   node-executor:
-    working_directory: ~/workspace
+    working_directory: /tmp
     docker:
       - image: circleci/node:12
 
@@ -13,7 +13,6 @@ jobs:
   build:
     executor:
       name: default
-    working_directory: ~/workspace
     steps:
       - checkout
       - run:
@@ -24,21 +23,20 @@ jobs:
           command: python manage.py test
       - run:
           name: Generate swagger artifacts
-          command: mkdir docs && python manage.py generate_swagger docs/swagger.yaml
+          command: mkdir -p docs && python manage.py generate_swagger docs/swagger.yaml
       - persist_to_workspace:
-          root: ~
+          root: docs
           paths:
-            - docs/swagger.yaml
+            - swagger.yaml
   netlify:
     executor:
       name: node-executor
-    working_directory: ~/workspace
     steps:
       - attach_workspace:
-          at: /tmp/workspace/docs/swagger.yaml
+          at: /tmp/docs
       - run:
           name: Echo Test
-          command: ls /tmp/workspace/docs/
+          command: ls /tmp/docs
 
 workflows:
   ci:
