@@ -27,7 +27,7 @@ jobs:
           command: python manage.py generate_swagger swagger.yaml
       - store_artifacts:
           path: swagger.yaml
-          destination: swagger.yaml
+          destination: docs/swagger.yaml
 
 workflows:
   ci:
