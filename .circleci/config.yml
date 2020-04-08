@@ -43,11 +43,7 @@ jobs:
 workflows:
   ci:
     jobs:
-      - build:
-        filters:
-          branches:
-            only:
-              - master
+      - build
       - netlify:
-        requires:
-          - build
+          requires:
+            - build
