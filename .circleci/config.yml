@@ -26,7 +26,7 @@ jobs:
           name: Generate swagger artifacts
           command: mkdir docs && python manage.py generate_swagger docs/swagger.yaml
       - persist_to_workspace:
-          root: workspace
+          root: ~
           paths:
             - docs/swagger.yaml
   netlify:
